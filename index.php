@@ -10,6 +10,7 @@
 </head>
 <body>
     <div class="container">
+
         <?php
         $path = $_SERVER["DOCUMENT_ROOT"];
         include($path."/_header.php");
@@ -48,8 +49,8 @@
                     <td><?php echo $item["name"]; ?></td>
                     <td><?php echo $item["description"]; ?></td>
                     <td>
-                        <a href="#" class="btn btn-info">Edit</a>
-                        <a href="#" class="btn btn-danger">Delete</a>
+                        <a href="/edit.php?id=<?php echo $item["id"] ?>" class="btn btn-info">Edit</a>
+                        <a href="/delete.php?id=<?php echo $item["id"] ?>" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>
             <?php
