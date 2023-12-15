@@ -7,7 +7,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST") {
     $sql = "DELETE FROM categories WHERE id = '$id'";
     $command = $pdo->prepare($sql);
     $command->execute();
-    header("Location /");
+    header("Location: " . "/");
     exit;
 }
 ?>
@@ -38,8 +38,8 @@ if($_SERVER["REQUEST_METHOD"]=="POST") {
             width: 20%;
             gap: 15px;
             border-radius: 10px;
-            background: darkgoldenrod;
-            color: white;
+            color: black;
+            font-size: 32px;
         }
     </style>
 </head>

@@ -1,4 +1,6 @@
 <?php
+$errMsgN = $errImg = $errDesc = "";
+
 if($_SERVER["REQUEST_METHOD"]=="POST") {
     $name = $_POST["name"];
     $description = $_POST["description"];
@@ -7,15 +9,25 @@ if($_SERVER["REQUEST_METHOD"]=="POST") {
     if(isset($_FILES["image"])) {
         $image_name = uniqid().".jpg";
         $save_image = $_SERVER["DOCUMENT_ROOT"]."/images/".$image_name;
-        move_uploaded_file($_FILES["image"]["tmp_name"], $save_image); //зберігаємо фото на сервер
+        move_uploaded_file($_FILES["image"]["tmp_name"], $save_image);
+    }
+    if (empty($_POST["name"])) {
+        $errMsgN = "Error! You didn't enter the Name.";
+    }
+    if (empty($_POST["description"])) {
+        $errDesc = "Error! You didn't enter the description.";
     }
     include($_SERVER["DOCUMENT_ROOT"]."/config/connection_database.php");
     global $pdo;
     $sql = "INSERT INTO categories (name, image, description) VALUES (?, ?, ?)";
-    $command = $pdo->prepare($sql);
-    $command->execute([$name, $image_name, $description]);
-    header("Location /");
-    exit;
+    if(isset($_POST['submit'])) {
+        if ($errMsgN == "" && $errImg == "" && $errDesc == "") {
+            $command = $pdo->prepare($sql);
+            $command->execute([$name, $image_name, $description]);
+            header("Location: " . "/");
+            exit;
+        }
+    }
 }
 ?>
 
@@ -42,19 +54,21 @@ if($_SERVER["REQUEST_METHOD"]=="POST") {
         <div class="mb-3">
             <label for="name" class="form-label">Name</label>
             <input type="text" class="form-control" id="name" name="name">
+            <span>* <?php echo $errMsgN; ?></span>
         </div>
 
         <div class="mb-3">
             <label for="image" class="form-label">Image</label>
-            <input type="file" class="form-control" id="image" name="image">
+            <input required type="file" class="form-control" id="image" name="image">
         </div>
 
         <div class="mb-3">
             <label for="description" class="form-label">Description</label>
             <textarea class="form-control" rows="5" id="description" name="description"></textarea>
+            <span>* <?php echo $errDesc; ?></span>
         </div>
 
-        <button type="submit" class="btn btn-primary">Add</button>
+        <button type="submit" name="submit" class="btn btn-primary">Add</button>
     </form>
 
 </div>
