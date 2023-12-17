@@ -1,13 +1,24 @@
 <?php
-$errMsgN = $errImg = $errDesc = "";
+$errMsgN = $errImg = $image_name = $errDesc = "";
 $id = $_GET['id'];
-$name = $_GET['name'];
+
+$path = $_SERVER["DOCUMENT_ROOT"];
+include($path."/_header.php");
+include($path."/config/connection_database.php");
+
+global $pdo;
+// Prepare and execute the SELECT query
+$stmt = $pdo->prepare("SELECT id, name, description, image FROM categories WHERE id = '$id'");
+$stmt->execute();
+
+// Fetch all rows as an associative array
+$result = $stmt->fetch();
 
 if($_SERVER["REQUEST_METHOD"]=="POST") {
     $name = $_POST["name"];
     $description = $_POST["description"];
 
-    $image_name="";
+    $image_name= "";
     if(isset($_FILES["image"])) {
         $image_name = uniqid().".jpg";
         $save_image = $_SERVER["DOCUMENT_ROOT"]."/images/".$image_name;
@@ -19,8 +30,6 @@ if($_SERVER["REQUEST_METHOD"]=="POST") {
     if (empty($_POST["description"])) {
         $errDesc = "Error! You didn't enter the description.";
     }
-    include($_SERVER["DOCUMENT_ROOT"]."/config/connection_database.php");
-    global $pdo;
     $sql = "UPDATE categories set name = '$name', image = '$image_name', description = '$description' WHERE id = '$id' ";
     if(isset($_POST['submit'])) {
         if ($errMsgN == "" && $errImg == "" && $errDesc == "") {
@@ -45,17 +54,13 @@ if($_SERVER["REQUEST_METHOD"]=="POST") {
 </head>
 <body>
 <div class="container">
-    <?php
-    $path = $_SERVER["DOCUMENT_ROOT"];
-    include($path . "/_header.php");
-    ?>
 
     <?php echo "<h1 class='text-center'>Edit category</h1>" ?>
 
     <form method="post" enctype="multipart/form-data" class="offset-md-3 col-md-6">
         <div class="mb-3">
             <label for="name" class="form-label">Name</label>
-            <input type="text" class="form-control" id="name" name="name" value="<?php echo $name ?>">
+            <input type="text" class="form-control" id="name" name="name" value="<?php echo $result["name"] ?>">
             <span>* <?php echo $errMsgN; ?></span>
         </div>
 
@@ -66,7 +71,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST") {
 
         <div class="mb-3">
             <label for="description" class="form-label">Description</label>
-            <textarea class="form-control" rows="5" id="description" name="description"></textarea>
+            <textarea class="form-control" rows="5" id="description" name="description"><?php echo $result["description"] ?></textarea>
             <span>* <?php echo $errDesc; ?></span>
         </div>
 

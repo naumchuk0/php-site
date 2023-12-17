@@ -1,5 +1,14 @@
 <?php
-$errMsgN = $errImg = $errDesc = "";
+$errMsgN = $errImg = $showImg = $errDesc = "";
+
+if (isset($_POST["check"])) {
+    $image_name = uniqid().".jpg";
+    $save_image = $_SERVER["DOCUMENT_ROOT"]."/images/".$image_name;
+    move_uploaded_file($_FILES["image"]["tmp_name"], $save_image);
+    $showImg = "<label for='image'>
+                        <img alt='select image' src='images/$image_name' width='300' />
+                    </label>";
+}
 
 if($_SERVER["REQUEST_METHOD"]=="POST") {
     $name = $_POST["name"];
@@ -57,9 +66,11 @@ if($_SERVER["REQUEST_METHOD"]=="POST") {
             <span>* <?php echo $errMsgN; ?></span>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3 d-flex flex-column gap-1 align-items-center">
             <label for="image" class="form-label">Image</label>
             <input required type="file" class="form-control" id="image" name="image">
+            <?php echo $showImg ?>
+            <button name="check">check img</button>
         </div>
 
         <div class="mb-3">
