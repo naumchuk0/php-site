@@ -2,6 +2,8 @@
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/vpd111.api.com/app" isTestSource="false" packagePrefix="App\" />
       <sourceFolder url="file://$MODULE_DIR$/vpd111.api.com/database/factories" isTestSource="false" packagePrefix="Database\Factories\" />
       <sourceFolder url="file://$MODULE_DIR$/vpd111.api.com/database/seeders" isTestSource="false" packagePrefix="Database\Seeders\" />
@@ -25,6 +27,8 @@
       <excludeFolder url="file://$MODULE_DIR$/vpd111.api.com/vendor/guzzlehttp/psr7" />
       <excludeFolder url="file://$MODULE_DIR$/vpd111.api.com/vendor/guzzlehttp/uri-template" />
       <excludeFolder url="file://$MODULE_DIR$/vpd111.api.com/vendor/hamcrest/hamcrest-php" />
+      <excludeFolder url="file://$MODULE_DIR$/vpd111.api.com/vendor/intervention/gif" />
+      <excludeFolder url="file://$MODULE_DIR$/vpd111.api.com/vendor/intervention/image" />
       <excludeFolder url="file://$MODULE_DIR$/vpd111.api.com/vendor/laravel/framework" />
       <excludeFolder url="file://$MODULE_DIR$/vpd111.api.com/vendor/laravel/pint" />
       <excludeFolder url="file://$MODULE_DIR$/vpd111.api.com/vendor/laravel/prompts" />

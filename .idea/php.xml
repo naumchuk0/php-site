@@ -129,6 +129,8 @@
       <path value="$PROJECT_DIR$/vpd111.api.com/vendor/dragonmantank/cron-expression" />
       <path value="$PROJECT_DIR$/vpd111.api.com/vendor/graham-campbell/result-type" />
       <path value="$PROJECT_DIR$/vpd111.api.com/vendor/composer" />
+      <path value="$PROJECT_DIR$/vpd111.api.com/vendor/intervention/gif" />
+      <path value="$PROJECT_DIR$/vpd111.api.com/vendor/intervention/image" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />
