@@ -1,15 +1,6 @@
 <?php
 $errMsgN = $errImg = $showImg = $errDesc = "";
 
-if (isset($_POST["check"])) {
-    $image_name = uniqid().".jpg";
-    $save_image = $_SERVER["DOCUMENT_ROOT"]."/images/".$image_name;
-    move_uploaded_file($_FILES["image"]["tmp_name"], $save_image);
-    $showImg = "<label for='image'>
-                        <img alt='select image' src='images/$image_name' width='300' />
-                    </label>";
-}
-
 if($_SERVER["REQUEST_METHOD"]=="POST") {
     $name = $_POST["name"];
     $description = $_POST["description"];
@@ -68,9 +59,10 @@ if($_SERVER["REQUEST_METHOD"]=="POST") {
 
         <div class="mb-3 d-flex flex-column gap-1 align-items-center">
             <label for="image" class="form-label">Image</label>
-            <input required type="file" class="form-control" id="image" name="image">
-            <?php echo $showImg ?>
-            <button name="check">check img</button>
+            <input onchange="addPhoto()" required type="file" class="form-control" id="image" name="image">
+            <label for="image">
+                <img src="" id="select_img" alt="select image" width="200" />
+            </label>
         </div>
 
         <div class="mb-3">
@@ -84,5 +76,16 @@ if($_SERVER["REQUEST_METHOD"]=="POST") {
 
 </div>
 <script src="/js/bootstrap.bundle.min.js"></script>
+<script>
+    function addPhoto() {
+        const reader = new FileReader()
+
+        let files = document.getElementById('image').files
+        reader.onload = async (event) => {
+            document.getElementById('select_img').setAttribute('src', event.target.result)
+        }
+        reader.readAsDataURL(files[0])
+    }
+</script>
 </body>
 </html>
