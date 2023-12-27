@@ -10,15 +10,19 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    function getAll() {
+    public function getAll() {
         $list = \App\Models\Categories::all();
         return response()->json($list,200, ['Charset'=>'utf-8']);
     }
 
-    function create(Request $request)
-    {
-        $input = $request->all(); //<- category name
-        $image = $request->file("image"); // get photo from the server
+    public function getById($id) {
+        $category = Categories::findOrFail($id);
+        return response()->json($category, 200, ['Charset'=>'utf-8']);
+    }
+
+    public function create(Request $request) {
+        $input = $request->all();
+        $image = $request->file("image");
         $manager = new ImageManager(new Driver());
         $imageName = uniqid().".webp";
         $folderName = "upload";
@@ -37,5 +41,45 @@ class CategoryController extends Controller
         $category=Categories::create($input);
 
         return response()->json($category, 200, ["Charset"=>"utf-8"]);
+    }
+
+    public function delete($id) {
+        $category = Categories::findOrFail($id);
+        $sizes = [50, 150, 300, 600, 1200];
+        foreach ($sizes as $size) {
+            $fileSave = $size . "_" . $category->image;
+            $path = public_path('upload/' . $fileSave);
+            if (file_exists($path))
+                unlink($path);
+        }
+        $category->delete();
+        return response()->json("", 200, ['Charset' => 'utf-8']);
+    }
+
+    public function edit($id, Request $request) {
+        $category = Categories::findOrFail($id);
+        $imageName=$category->image;
+        $inputs = $request->all();
+        if($request->hasFile("image")) {
+            $image = $request->file("image");
+            $imageName = uniqid() . ".webp";
+            $sizes = [50, 150, 300, 600, 1200];
+            // create image manager with desired driver
+            $manager = new ImageManager(new Driver());
+            foreach ($sizes as $size) {
+                $fileSave = $size . "_" . $imageName;
+                $imageRead = $manager->read($image);
+                $imageRead->scale(width: $size);
+                $path = public_path('upload/' . $fileSave);
+                $imageRead->toWebp()->save($path);
+                $removeImage = public_path('upload/'.$size."_". $category->image);
+                if(file_exists($removeImage))
+                    unlink($removeImage);
+            }
+        }
+        $inputs["image"]= $imageName;
+        $category->update($inputs);
+        return response()->json($category,200,
+            ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
     }
 }
