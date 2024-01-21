@@ -25,3 +25,4 @@ Route::delete("categories/delete/{id}", [\App\Http\Controllers\API\CategoryContr
 Route::post("categories/edit/{id}", [\App\Http\Controllers\API\CategoryController::class, "edit"]);
 
 Route::post("register", [\App\Http\Controllers\API\AuthController::class, 'register']);
+Route::post("product", [\App\Http\Controllers\API\ProductController::class, 'create']);
